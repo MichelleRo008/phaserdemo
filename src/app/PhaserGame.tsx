@@ -7,7 +7,7 @@ export default function PhaserGame() {
   const gameRef = useRef<HTMLDivElement>(null);
   const phaserGameRef = useRef<Phaser.Game | null>(null);
   const boxRef = useRef<Phaser.Physics.Arcade.Image | null>(null);
-  const [boxColor, setBoxColor] = useState(0xffffff);
+  const [boxScale, setBoxScale] = useState(1);
 
   useEffect(() => {
     if (!gameRef.current) return;
@@ -69,22 +69,22 @@ export default function PhaserGame() {
 
   useEffect(() => {
     if (boxRef.current) {
-      boxRef.current.setTint(boxColor);
+      boxRef.current.setScale(boxScale);
     }
-  }, [boxColor]);
+  }, [boxScale]);
 
-  const changeBoxColor = () => {
-    const colors = [0xffffff, 0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff, 0x00ffff];
-    const currentIndex = colors.indexOf(boxColor);
-    const nextIndex = (currentIndex + 1) % colors.length;
-    setBoxColor(colors[nextIndex]);
+  const changeBoxSize = () => {
+    const scales = [0.5, 0.8, 1, 1.3, 1.6, 2, 2.5];
+    const currentIndex = scales.indexOf(boxScale);
+    const nextIndex = (currentIndex + 1) % scales.length;
+    setBoxScale(scales[nextIndex]);
   };
 
   return (
     <div>
       <div ref={gameRef} style={{ width: '800px', height: '600px' }} />
       <button 
-        onClick={changeBoxColor}
+        onClick={changeBoxSize}
         style={{
           marginTop: '10px',
           padding: '10px 20px',
@@ -96,7 +96,7 @@ export default function PhaserGame() {
           cursor: 'pointer'
         }}
       >
-        Change Box Color
+        Change Box Size
       </button>
     </div>
   );
