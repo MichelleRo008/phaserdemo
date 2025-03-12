@@ -1,11 +1,13 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Phaser from 'phaser';
 
 export default function PhaserGame() {
   const gameRef = useRef<HTMLDivElement>(null);
   const phaserGameRef = useRef<Phaser.Game | null>(null);
+  const boxRef = useRef<Phaser.Physics.Arcade.Image | null>(null);
+  const [boxColor, setBoxColor] = useState(0xffffff);
 
   useEffect(() => {
     if (!gameRef.current) return;
@@ -48,6 +50,7 @@ export default function PhaserGame() {
           box.setVelocity(50, -100);
           box.setBounce(0.8, 0.8);
           box.setCollideWorldBounds(true);
+          boxRef.current = box;
           
           particles.startFollow(logo);
         }
@@ -64,5 +67,37 @@ export default function PhaserGame() {
     };
   }, []);
 
-  return <div ref={gameRef} style={{ width: '800px', height: '600px' }} />;
+  useEffect(() => {
+    if (boxRef.current) {
+      boxRef.current.setTint(boxColor);
+    }
+  }, [boxColor]);
+
+  const changeBoxColor = () => {
+    const colors = [0xffffff, 0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff, 0x00ffff];
+    const currentIndex = colors.indexOf(boxColor);
+    const nextIndex = (currentIndex + 1) % colors.length;
+    setBoxColor(colors[nextIndex]);
+  };
+
+  return (
+    <div>
+      <div ref={gameRef} style={{ width: '800px', height: '600px' }} />
+      <button 
+        onClick={changeBoxColor}
+        style={{
+          marginTop: '10px',
+          padding: '10px 20px',
+          fontSize: '16px',
+          backgroundColor: '#007cba',
+          color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer'
+        }}
+      >
+        Change Box Color
+      </button>
+    </div>
+  );
 }
