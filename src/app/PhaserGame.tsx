@@ -28,6 +28,7 @@ export default function PhaserGame() {
           this.load.image('sky', 'assets/skies/space3.png');
           this.load.image('logo', 'assets/sprites/phaser3-logo.png');
           this.load.image('red', 'assets/particles/red.png');
+          this.load.image('box', 'assets/sprites/block.png');
         },
         create: function() {
           this.add.image(400, 300, 'sky');
@@ -42,6 +43,11 @@ export default function PhaserGame() {
           logo.setVelocity(100, 200);
           logo.setBounce(1, 1);
           logo.setCollideWorldBounds(true);
+          
+          const box = this.physics.add.image(200, 450, 'box');
+          box.setVelocity(50, -100);
+          box.setBounce(0.8, 0.8);
+          box.setCollideWorldBounds(true);
           
           particles.startFollow(logo);
         }
